@@ -1,0 +1,10 @@
+<div class="buttons"><button (click)="_addDriver()">Add Driver</button><button (click)="_addVehicle()">Add Vehicle</button></div>
+<h3>Drivers</h3>
+<div *ngFor="let driver of drivers; index as i">
+  <app-driver [driver]="driver" [primaryVehicleDropdown]="dropdowns[i]" 
+  (updatePrimaryVehicle)="_updatePrimaryVehicle(driver.id, $event)">
+  </app-driver>
+</div>
+
+<h3>Dropdowns</h3>
+<pre>{{dropdowns | json}}</pre>

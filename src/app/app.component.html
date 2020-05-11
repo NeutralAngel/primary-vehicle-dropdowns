@@ -1,0 +1,7 @@
+<h1>Primary Vehicle Dropdowns</h1>
+<app-wonderwall [drivers]="drivers$ | async" [vehicles]="vehicles$ | async"
+[dropdowns]="dropdowns$ | async"
+(updatePrimaryVehicle)="_updatePrimaryVehicle($event)"
+(addDriver)="addDriver($event)"
+(addVehicle)="addVehicle($event)">
+</app-wonderwall>

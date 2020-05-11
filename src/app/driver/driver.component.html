@@ -1,0 +1,10 @@
+<div>
+  <div>{{ driver.name }}</div>
+  <select name="primaryVehicle" [formControl]="primaryVehicle" >
+    <option value="">--Please choose an option--</option>
+    <option *ngFor="let option of primaryVehicleDropdown" [value]="option.id">
+      {{option.description}}
+      </option>
+  </select>
+</div>
+
