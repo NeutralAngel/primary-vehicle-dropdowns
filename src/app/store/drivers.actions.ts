@@ -1,8 +1,11 @@
 import { createAction, props } from "@ngrx/store";
+import { VehicleAssociation } from "./drivers.reducer";
 
 export const updatePrimaryVehicle = createAction(
   "[Driver Component] Update Primary Vehicle",
-  props<{ data: { driverId: string; vehicleId: string } }>()
+  props<{
+    data: { driverId: string; vehicleAssociations: VehicleAssociation[] };
+  }>()
 );
 
 export const addDriver = createAction(

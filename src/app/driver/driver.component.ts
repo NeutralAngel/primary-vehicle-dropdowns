@@ -14,6 +14,7 @@ import {
   filter,
   skip
 } from "rxjs/operators";
+import { Driver } from "../store/drivers.reducer";
 
 @Component({
   selector: "app-driver",
@@ -22,7 +23,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DriverComponent implements OnInit {
-  @Input() driver;
+  @Input() driver: Driver;
   @Input() primaryVehicleDropdown = [];
   @Output() updatePrimaryVehicle = new EventEmitter<any>();
 
@@ -37,7 +38,14 @@ export class DriverComponent implements OnInit {
   }
 
   ngOnChanges() {
-    this.primaryVehicle.setValue(this.driver.primary, { emitEvent: false });
+    let primaryVehicle = this.driver.vehicleAssociations.find(
+      va => va.associationTypeCode === "PR"
+    );
+
+    this.primaryVehicle.setValue(
+      primaryVehicle ? primaryVehicle.vehicleId : "",
+      { emitEvent: false }
+    );
 
     if (this.primaryVehicleDropdown.length !== 0) {
       this.primaryVehicle.enable({ emitEvent: false });

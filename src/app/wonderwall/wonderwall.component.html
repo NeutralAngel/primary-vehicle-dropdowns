@@ -2,7 +2,7 @@
 <h3>Drivers</h3>
 <div *ngFor="let driver of drivers; index as i">
   <app-driver [driver]="driver" [primaryVehicleDropdown]="dropdowns[i]" 
-  (updatePrimaryVehicle)="_updatePrimaryVehicle(driver.id, $event)">
+  (updatePrimaryVehicle)="_updatePrimaryVehicle(driver, $event)">
   </app-driver>
 </div>
 

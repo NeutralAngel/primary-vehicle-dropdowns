@@ -1,5 +1,6 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
 import * as fromVehicles from "./vehicles.reducer";
+import * as _ from "lodash";
 
 export const selectVehiclesState = createFeatureSelector<fromVehicles.State>(
   "vehicles"
@@ -23,5 +24,5 @@ export const _selectAllVehicles = createSelector(
 
 export const selectAllVehicles = createSelector(
   _selectAllVehicles,
-  vehicles => vehicles
+  vehicles => _.cloneDeep(vehicles)
 );

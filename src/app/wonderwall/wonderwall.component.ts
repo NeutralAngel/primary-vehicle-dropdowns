@@ -6,6 +6,7 @@ import {
   Output,
   ChangeDetectionStrategy
 } from "@angular/core";
+import { Driver } from "../store/drivers.reducer";
 
 @Component({
   selector: "app-wonderwall",
@@ -19,7 +20,7 @@ export class WonderwallComponent implements OnInit {
   @Input() vehicles = [];
   @Output() updatePrimaryVehicle = new EventEmitter<{
     driverId: string;
-    vehicleId: string;
+    vehicleAssociations: any;
   }>();
   @Output() addDriver = new EventEmitter<string>();
   @Output() addVehicle = new EventEmitter<string>();
@@ -30,8 +31,18 @@ export class WonderwallComponent implements OnInit {
 
   ngOnInit() {}
 
-  _updatePrimaryVehicle(driverId: string, vehicleId: string) {
-    this.updatePrimaryVehicle.emit({ driverId, vehicleId });
+  _updatePrimaryVehicle(driver: Driver, vehicleId: string) {
+    const vehicleAssociations = [
+      ...driver.vehicleAssociations.filter(
+        va => va.associationTypeCode != "PR"
+      ),
+      { vehicleId, associationTypeCode: "PR" }
+    ];
+
+    this.updatePrimaryVehicle.emit({
+      driverId: driver.id,
+      vehicleAssociations
+    });
   }
 
   _addDriver(): void {

@@ -12,7 +12,7 @@ import { DriverComponent } from "./driver/driver.component";
 
 export function debug(reducer: ActionReducer<any>): ActionReducer<any> {
   return function(state, action) {
-    // console.log("state", JSON.stringify(state, null, 2));
+    console.log("state", JSON.stringify(state, null, 2));
     console.log("action", action);
     return reducer(state, action);
   };

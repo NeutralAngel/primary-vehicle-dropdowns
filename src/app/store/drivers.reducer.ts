@@ -10,16 +10,61 @@ import * as vehiclesActions from "./vehicles.actions";
 import * as driversActions from "./drivers.actions";
 import update = require("lodash/update");
 
-export const DRIVERS = [
-  { id: "1", name: "driver1", primary: "" },
-  { id: "2", name: "driver2", primary: "" }
+export const DRIVERS: Driver[] = [
+  {
+    id: "1",
+    name: "driver1",
+    primary: "",
+    vehicleAssociations: [
+      // {
+      //   vehicleId: 1,
+      //   associationTypeCode: "PR"
+      // },
+      {
+        vehicleId: "2",
+        associationTypeCode: "OC"
+      }
+    ]
+  },
+  {
+    id: "2",
+    name: "driver2",
+    primary: "",
+    vehicleAssociations: [
+      // {
+      //   vehicleId: 1,
+      //   associationTypeCode: "PR"
+      // },
+      {
+        vehicleId: "2",
+        associationTypeCode: "OC"
+      }
+    ]
+  }
 ];
 
 export interface Driver {
   id: string;
   name: string;
   primary: string;
+  vehicleAssociations: VehicleAssociation[];
 }
+
+export interface VehicleAssociation {
+  vehicleId: string;
+  associationTypeCode: string;
+}
+
+// "vehicleAssociations": [
+//             {
+//                 "vehicleId": 1,
+//                 "associationTypeCode": "PR"
+//             },
+//             {
+//                 "vehicleId": 2,
+//                 "associationTypeCode": "OC"
+//             }
+//         ],
 
 export interface State extends EntityState<Driver> {}
 
@@ -33,8 +78,14 @@ const driversReducer = createReducer(
     return adapter.setAll(DRIVERS, state);
   }),
   on(driversActions.updatePrimaryVehicle, (state, action) => {
+    let vehicleAssociations = action.data.vehicleAssociations;
     let updates: Update<Driver>[] = [
-      { id: action.data.driverId, changes: { primary: action.data.vehicleId } }
+      {
+        id: action.data.driverId,
+        changes: {
+          vehicleAssociations
+        }
+      }
     ];
     updates = updates.concat(
       (state.ids as string[])
@@ -42,7 +93,14 @@ const driversReducer = createReducer(
         .map(id => {
           return {
             id,
-            changes: { primary: "" }
+            changes: {
+              primary: "",
+              vehicleAssociations: [
+                ...state.entities[id].vehicleAssociations.filter(
+                  va => va.associationTypeCode !== "PR"
+                )
+              ]
+            }
           };
         })
     );
@@ -53,7 +111,8 @@ const driversReducer = createReducer(
       {
         id: action.data.driverId,
         name: "driver" + action.data.driverId,
-        primary: ""
+        primary: "",
+        vehicleAssociations: []
       },
       state
     );
